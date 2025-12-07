@@ -1,0 +1,772 @@
+---
+title: "Tutoriel R Markdown"
+subtitle: "Guide complet pour la rédaction de rapports scientifiques en aquaculture"
+author: "Votre Nom"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    theme: cosmo
+    highlight: tango
+  pdf_document:
+    toc: true
+    number_sections: true
+    latex_engine: xelatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 8,
+  fig.height = 6,
+  fig.align = "center"
+)
+```
+
+# Introduction à R Markdown
+
+## Qu'est-ce que R Markdown ?
+
+**R Markdown** est un format de document qui permet de **combiner du texte, du code R et des résultats** dans un seul document. Il est idéal pour :
+
+- Rédiger des **rapports scientifiques** reproductibles
+- Créer des **analyses statistiques** documentées
+- Produire des **présentations** ou des **documents PDF/HTML**
+- Partager vos **analyses en aquaculture** de manière professionnelle
+
+## Structure d'un document R Markdown
+
+Un document R Markdown (.Rmd) contient trois éléments principaux :
+
+1. **En-tête YAML** (métadonnées du document)
+2. **Texte en Markdown** (texte formaté)
+3. **Chunks de code R** (code exécutable)
+
+---
+
+# L'en-tête YAML
+
+L'en-tête YAML se trouve **au début du document** entre deux lignes de trois tirets `---`.
+
+## Exemple d'en-tête de base
+
+```yaml
+---
+title: "Analyse de la croissance du bar"
+author: "Jean Dupont"
+date: "2025-12-07"
+output: html_document
+---
+```
+
+## Options de sortie
+
+### HTML interactif
+
+```yaml
+output:
+  html_document:
+    toc: true                # Table des matières
+    toc_float: true          # Sommaire flottant
+    toc_depth: 3             # Profondeur du sommaire
+    number_sections: true    # Numérotation automatique
+    theme: cosmo             # Thème visuel
+    highlight: tango         # Coloration syntaxique
+    code_folding: hide       # Cacher le code par défaut
+```
+
+**Thèmes disponibles** : `default`, `cerulean`, `cosmo`, `flatly`, `journal`, `lumen`, `paper`, `readable`, `sandstone`, `simplex`, `spacelab`, `united`, `yeti`
+
+### PDF professionnel
+
+```yaml
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+    latex_engine: xelatex    # Meilleur support des caractères
+    fig_caption: true        # Légendes des figures
+```
+
+### Plusieurs formats
+
+```yaml
+output:
+  html_document:
+    toc: true
+  pdf_document:
+    toc: true
+  word_document:
+    toc: true
+```
+
+---
+
+# Mise en forme du texte
+
+## Titres et sections
+
+```markdown
+# Titre de niveau 1
+## Titre de niveau 2
+### Titre de niveau 3
+#### Titre de niveau 4
+```
+
+### Exemple en aquaculture
+
+# Étude de la croissance de la daurade royale
+
+## Matériel et méthodes
+
+### Site d'étude
+
+L'expérience a été menée dans une ferme aquacole méditerranéenne.
+
+### Mesures biométriques
+
+Les poissons ont été pesés et mesurés hebdomadairement.
+
+## Formatage du texte
+
+| Syntaxe | Rendu | Exemple aquaculture |
+|---------|-------|---------------------|
+| `*italique*` ou `_italique_` | *italique* | *Sparus aurata* (nom d'espèce) |
+| `**gras**` ou `__gras__` | **gras** | **Température optimale : 24°C** |
+| `***gras italique***` | ***gras italique*** | ***Attention : stress thermique*** |
+| `` `code` `` | `code` | Variable `temperature` |
+| `~~barré~~` | ~~barré~~ | ~~Ancienne méthode~~ |
+
+### Exemple pratique
+
+```markdown
+L'espèce étudiée est la *daurade royale* (*Sparus aurata*).
+La **température de l'eau** est un facteur critique.
+***IMPORTANT*** : Maintenir l'oxygène > 5 mg/L.
+La fonction `lm()` permet de modéliser la croissance.
+```
+
+**Rendu** :
+
+L'espèce étudiée est la *daurade royale* (*Sparus aurata*). La **température de l'eau** est un facteur critique. ***IMPORTANT*** : Maintenir l'oxygène > 5 mg/L. La fonction `lm()` permet de modéliser la croissance.
+
+## Listes
+
+### Liste à puces
+
+```markdown
+Facteurs influençant la croissance :
+
+- Température de l'eau
+- Concentration en oxygène dissous
+- Densité d'élevage
+  - Faible densité : < 10 kg/m³
+  - Haute densité : > 20 kg/m³
+- Qualité de l'aliment
+```
+
+**Rendu** :
+
+Facteurs influençant la croissance :
+
+- Température de l'eau
+- Concentration en oxygène dissous
+- Densité d'élevage
+  - Faible densité : < 10 kg/m³
+  - Haute densité : > 20 kg/m³
+- Qualité de l'aliment
+
+### Liste numérotée
+
+```markdown
+Protocole expérimental :
+
+1. Acclimation des poissons (7 jours)
+2. Mesure des paramètres initiaux
+   a. Poids individuel
+   b. Longueur totale
+3. Application des traitements
+4. Mesures hebdomadaires
+5. Analyse statistique
+```
+
+**Rendu** :
+
+Protocole expérimental :
+
+1. Acclimation des poissons (7 jours)
+2. Mesure des paramètres initiaux
+   a. Poids individuel
+   b. Longueur totale
+3. Application des traitements
+4. Mesures hebdomadaires
+5. Analyse statistique
+
+## Liens et images
+
+### Liens hypertextes
+
+```markdown
+[Site de la FAO sur l'aquaculture](https://www.fao.org/aquaculture/fr)
+```
+
+**Rendu** : [Site de la FAO sur l'aquaculture](https://www.fao.org/aquaculture/fr)
+
+### Images
+
+```markdown
+![Daurade royale](chemin/vers/image.jpg)
+![Daurade royale](image.jpg){width=50%}
+```
+
+## Tableaux
+
+```markdown
+| Espèce | Température optimale (°C) | Croissance (g/jour) |
+|--------|---------------------------|---------------------|
+| Daurade royale | 22-26 | 2.5 |
+| Bar européen | 20-24 | 2.0 |
+| Loup de mer | 18-22 | 1.8 |
+```
+
+**Rendu** :
+
+| Espèce | Température optimale (°C) | Croissance (g/jour) |
+|--------|---------------------------|---------------------|
+| Daurade royale | 22-26 | 2.5 |
+| Bar européen | 20-24 | 2.0 |
+| Loup de mer | 18-22 | 1.8 |
+
+### Alignement dans les tableaux
+
+```markdown
+| Gauche | Centre | Droite |
+|:-------|:------:|-------:|
+| A | B | C |
+```
+
+- `:---` = aligné à gauche
+- `:---:` = centré
+- `---:` = aligné à droite
+
+---
+
+# Formules mathématiques
+
+R Markdown utilise **LaTeX** pour les formules mathématiques.
+
+## Formules en ligne
+
+Utilisez `$...$` pour insérer une formule dans le texte.
+
+```markdown
+Le taux de croissance spécifique est calculé par : $SGR = \frac{\ln(W_f) - \ln(W_i)}{t} \times 100$
+```
+
+**Rendu** :
+
+Le taux de croissance spécifique est calculé par : $SGR = \frac{\ln(W_f) - \ln(W_i)}{t} \times 100$
+
+## Formules centrées
+
+Utilisez `$$...$$` pour une formule sur sa propre ligne.
+
+```markdown
+$$
+FCR = \frac{\text{Aliment distribué (kg)}}{\text{Gain de poids (kg)}}
+$$
+```
+
+**Rendu** :
+
+$$
+FCR = \frac{\text{Aliment distribué (kg)}}{\text{Gain de poids (kg)}}
+$$
+
+## Exemples de formules en aquaculture
+
+### Taux de croissance spécifique (SGR)
+
+```markdown
+$$
+SGR = \frac{\ln(W_f) - \ln(W_i)}{t} \times 100
+$$
+
+où $W_f$ = poids final, $W_i$ = poids initial, $t$ = durée (jours)
+```
+
+**Rendu** :
+
+$$
+SGR = \frac{\ln(W_f) - \ln(W_i)}{t} \times 100
+$$
+
+où $W_f$ = poids final, $W_i$ = poids initial, $t$ = durée (jours)
+
+### Facteur de conversion alimentaire (FCR)
+
+$$
+FCR = \frac{F}{W_f - W_i}
+$$
+
+où $F$ = quantité d'aliment distribuée
+
+### Relation poids-longueur
+
+$$
+W = a \times L^b
+$$
+
+Sous forme logarithmique :
+
+$$
+\ln(W) = \ln(a) + b \times \ln(L)
+$$
+
+### Modèle de von Bertalanffy
+
+$$
+L_t = L_\infty \left(1 - e^{-K(t - t_0)}\right)
+$$
+
+où :
+
+- $L_t$ = longueur au temps $t$
+- $L_\infty$ = longueur asymptotique
+- $K$ = coefficient de croissance
+- $t_0$ = âge théorique à longueur nulle
+
+### Indices statistiques
+
+Moyenne : $\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i$
+
+Écart-type : $s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}$
+
+Coefficient de variation : $CV = \frac{s}{\bar{x}} \times 100$
+
+## Symboles mathématiques courants
+
+| Code LaTeX | Symbole | Utilisation aquaculture |
+|------------|---------|-------------------------|
+| `\alpha` | $\alpha$ | Seuil de significativité |
+| `\beta` | $\beta$ | Coefficient de régression |
+| `\mu` | $\mu$ | Moyenne de population |
+| `\sigma` | $\sigma$ | Écart-type de population |
+| `\pm` | $\pm$ | Plus ou moins (erreur) |
+| `\leq` | $\leq$ | Inférieur ou égal |
+| `\geq` | $\geq$ | Supérieur ou égal |
+| `\times` | $\times$ | Multiplication |
+| `\approx` | $\approx$ | Approximativement |
+| `\neq` | $\neq$ | Différent de |
+
+---
+
+# Chunks de code R
+
+## Structure d'un chunk
+
+Un chunk de code R commence par `` ```{r} `` et se termine par `` ``` ``.
+
+````markdown
+```{r}
+# Votre code R ici
+x <- 1:10
+mean(x)
+```
+````
+
+## Nommage des chunks
+
+Il est **recommandé** de nommer vos chunks pour faciliter la navigation et le débogage.
+
+````markdown
+```{r calcul-biomasse}
+biomasse <- poids_moyen * nombre_poissons
+biomasse
+```
+````
+
+## Options des chunks
+
+Les options se placent dans l'en-tête du chunk : `` ```{r nom-chunk, option1=valeur1, option2=valeur2} ``
+
+### Options principales
+
+| Option | Valeurs | Description | Exemple aquaculture |
+|--------|---------|-------------|---------------------|
+| `echo` | `TRUE`/`FALSE` | Afficher le code | `echo=FALSE` pour rapport final |
+| `eval` | `TRUE`/`FALSE` | Exécuter le code | `eval=FALSE` pour exemple |
+| `include` | `TRUE`/`FALSE` | Inclure chunk dans le rendu | `include=FALSE` pour setup |
+| `results` | `'markup'`, `'hide'`, `'hold'`, `'asis'` | Format des résultats | `results='asis'` pour tableaux |
+| `message` | `TRUE`/`FALSE` | Afficher les messages | `message=FALSE` pour packages |
+| `warning` | `TRUE`/`FALSE` | Afficher les warnings | `warning=FALSE` |
+| `error` | `TRUE`/`FALSE` | Continuer si erreur | `error=TRUE` pour démo |
+| `fig.width` | nombre | Largeur figure (pouces) | `fig.width=10` |
+| `fig.height` | nombre | Hauteur figure (pouces) | `fig.height=6` |
+| `fig.cap` | texte | Légende de la figure | `fig.cap="Croissance du bar"` |
+| `fig.align` | `'left'`, `'center'`, `'right'` | Alignement figure | `fig.align='center'` |
+
+### Exemples pratiques
+
+#### Chunk setup (caché)
+
+````markdown
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 8,
+  fig.height = 6
+)
+
+library(ggplot2)
+library(dplyr)
+```
+````
+
+**Rendu** : Rien n'apparaît dans le document (chunk exécuté en coulisse).
+
+#### Afficher uniquement le résultat
+
+````markdown
+```{r calcul-biomasse, echo=FALSE}
+biomasse_totale <- 1250 * 45.3  # 1250 poissons à 45.3g
+biomasse_totale
+```
+````
+
+**Rendu** : Seul le résultat s'affiche, pas le code.
+
+```{r calcul-biomasse-demo, echo=FALSE}
+biomasse_totale <- 1250 * 45.3
+biomasse_totale
+```
+
+#### Afficher le code sans l'exécuter
+
+````markdown
+```{r exemple-formule, eval=FALSE}
+# Calcul du SGR (non exécuté)
+SGR <- (log(poids_final) - log(poids_initial)) / duree * 100
+```
+````
+
+**Rendu** : Le code s'affiche mais n'est pas exécuté.
+
+```{r exemple-formule-demo, eval=FALSE}
+# Calcul du SGR
+SGR <- (log(poids_final) - log(poids_initial)) / duree * 100
+```
+
+#### Figure avec légende
+
+````markdown
+```{r graphique-croissance, fig.cap="Évolution du poids moyen de la daurade en fonction du temps", fig.width=8, fig.height=5}
+temps <- c(0, 30, 60, 90, 120)
+poids <- c(5, 25, 55, 95, 145)
+
+plot(temps, poids, type = "b", pch = 19, col = "blue",
+     xlab = "Temps (jours)", ylab = "Poids moyen (g)",
+     main = "Croissance de Sparus aurata")
+```
+````
+
+**Rendu** :
+
+```{r graphique-croissance-demo, fig.cap="Évolution du poids moyen de la daurade en fonction du temps", fig.width=8, fig.height=5, echo=FALSE}
+temps <- c(0, 30, 60, 90, 120)
+poids <- c(5, 25, 55, 95, 145)
+
+plot(temps, poids, type = "b", pch = 19, col = "blue",
+     xlab = "Temps (jours)", ylab = "Poids moyen (g)",
+     main = "Croissance de Sparus aurata")
+```
+
+## Chunks en ligne
+
+Vous pouvez insérer du code R directement dans le texte avec `` `r ` ``.
+
+```markdown
+La biomasse totale est de `r round(biomasse_totale/1000, 2)` kg.
+```
+
+**Rendu** :
+
+La biomasse totale est de `r round(1250 * 45.3 / 1000, 2)` kg.
+
+---
+
+# Exemple complet : Analyse de croissance
+
+```{r generation-donnees, echo=FALSE}
+set.seed(123)
+n <- 50
+temperature <- rnorm(n, mean = 23, sd = 2)
+oxygene <- rnorm(n, mean = 6.5, sd = 0.8)
+poids_initial <- rnorm(n, mean = 10, sd = 2)
+duree <- 90
+poids_final <- poids_initial + 0.8 * temperature + 1.2 * oxygene + rnorm(n, sd = 3)
+poids_final <- pmax(poids_final, poids_initial + 5)
+
+daurade <- data.frame(
+  temperature = round(temperature, 1),
+  oxygene = round(oxygene, 1),
+  poids_initial = round(poids_initial, 1),
+  poids_final = round(poids_final, 1)
+)
+
+daurade$SGR <- round((log(daurade$poids_final) - log(daurade$poids_initial)) / duree * 100, 3)
+```
+
+## Chargement et exploration des données
+
+```{r exploration}
+# Statistiques descriptives
+summary(daurade)
+
+# Nombre d'observations
+nrow(daurade)
+```
+
+## Visualisation
+
+```{r graphique-relation, fig.cap="Relation entre température et taux de croissance spécifique (SGR)", fig.width=8, fig.height=6}
+library(ggplot2)
+
+ggplot(daurade, aes(x = temperature, y = SGR)) +
+  geom_point(color = "steelblue", size = 3, alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  labs(
+    title = "Influence de la température sur la croissance",
+    subtitle = "Daurade royale (Sparus aurata) - 90 jours d'élevage",
+    x = "Température (°C)",
+    y = "Taux de croissance spécifique SGR (%/jour)"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+## Analyse statistique
+
+```{r modele-regression}
+# Modèle de régression linéaire
+modele <- lm(SGR ~ temperature + oxygene, data = daurade)
+summary(modele)
+```
+
+**Interprétation** :
+
+Le modèle montre que la température et l'oxygène dissous ont un effet significatif sur le SGR (p < 0.001). Le modèle explique `r round(summary(modele)$r.squared * 100, 1)`% de la variance du taux de croissance.
+
+## Tableau récapitulatif
+
+```{r tableau-stats, results='asis'}
+library(knitr)
+
+stats <- daurade %>%
+  summarise(
+    `Température moyenne (°C)` = round(mean(temperature), 1),
+    `Oxygène moyen (mg/L)` = round(mean(oxygene), 1),
+    `Poids initial moyen (g)` = round(mean(poids_initial), 1),
+    `Poids final moyen (g)` = round(mean(poids_final), 1),
+    `SGR moyen (%/jour)` = round(mean(SGR), 3)
+  )
+
+kable(stats, caption = "Statistiques descriptives de l'expérience")
+```
+
+---
+
+# Blocs spéciaux
+
+## Notes et avertissements (HTML uniquement)
+
+### Note informative
+
+```markdown
+> **Note** : La température optimale pour la daurade se situe entre 22 et 26°C.
+```
+
+**Rendu** :
+
+> **Note** : La température optimale pour la daurade se situe entre 22 et 26°C.
+
+### Avertissement
+
+```markdown
+> **⚠️ Attention** : Des températures > 28°C peuvent causer un stress thermique.
+```
+
+**Rendu** :
+
+> **⚠️ Attention** : Des températures > 28°C peuvent causer un stress thermique.
+
+## Bloc de citation
+
+```markdown
+> "L'aquaculture est l'une des industries alimentaires à la croissance la plus rapide au monde."
+>
+> --- FAO, 2022
+```
+
+**Rendu** :
+
+> "L'aquaculture est l'une des industries alimentaires à la croissance la plus rapide au monde."
+>
+> --- FAO, 2022
+
+## Code non-R
+
+### SQL
+
+````markdown
+```sql
+SELECT espece, AVG(poids) as poids_moyen
+FROM poissons
+WHERE temperature BETWEEN 20 AND 25
+GROUP BY espece;
+```
+````
+
+### Python
+
+````markdown
+```python
+import pandas as pd
+data = pd.read_csv("croissance.csv")
+print(data.describe())
+```
+````
+
+---
+
+# Astuces avancées
+
+## Options globales des chunks
+
+Définir des options par défaut dans le chunk `setup` :
+
+```{r setup-global, eval=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,          # Afficher le code par défaut
+  warning = FALSE,      # Masquer les warnings
+  message = FALSE,      # Masquer les messages
+  fig.width = 8,        # Largeur par défaut des figures
+  fig.height = 6,       # Hauteur par défaut
+  fig.align = "center", # Centrer les figures
+  cache = FALSE         # Désactiver le cache
+)
+```
+
+## Insertion de date automatique
+
+Dans l'en-tête YAML :
+
+```yaml
+date: "`r Sys.Date()`"
+```
+
+Ou en français :
+
+```yaml
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+```
+
+## Bibliographie
+
+Ajouter des références bibliographiques :
+
+1. Créer un fichier `references.bib`
+2. Ajouter dans l'en-tête YAML :
+
+```yaml
+bibliography: references.bib
+```
+
+3. Citer dans le texte : `[@auteur2023]`
+
+---
+
+# Rendu du document
+
+## Depuis RStudio
+
+1. Cliquer sur le bouton **Knit** (ou Ctrl+Shift+K)
+2. Choisir le format : HTML, PDF ou Word
+
+## Depuis la console R
+
+```{r render-document, eval=FALSE}
+# HTML
+rmarkdown::render("mon_rapport.Rmd", output_format = "html_document")
+
+# PDF
+rmarkdown::render("mon_rapport.Rmd", output_format = "pdf_document")
+
+# Word
+rmarkdown::render("mon_rapport.Rmd", output_format = "word_document")
+
+# Tous les formats
+rmarkdown::render("mon_rapport.Rmd", output_format = "all")
+```
+
+---
+
+# Ressources complémentaires
+
+## Documentation officielle
+
+- [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+- [R Markdown Cheat Sheet](https://www.rstudio.com/resources/cheatsheets/)
+- [R Markdown Reference Guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+
+## Packages utiles
+
+```{r packages-utiles, eval=FALSE}
+# Tableaux élégants
+install.packages("kableExtra")
+install.packages("gt")
+install.packages("flextable")
+
+# Graphiques interactifs
+install.packages("plotly")
+install.packages("DT")
+
+# Diagrammes
+install.packages("DiagrammeR")
+```
+
+## Exemples de templates
+
+```{r templates, eval=FALSE}
+# Créer un nouveau document avec template
+rmarkdown::draft("mon_rapport.Rmd", template = "html_document", package = "rmarkdown")
+```
+
+---
+
+# Exercice pratique
+
+**Objectif** : Créer un rapport d'analyse de la croissance du bar européen (*Dicentrarchus labrax*).
+
+**Consignes** :
+
+1. Créer un nouveau fichier R Markdown
+2. Ajouter un en-tête YAML avec titre, auteur, date et sommaire
+3. Créer 3 sections :
+   - Introduction (texte avec formule du SGR)
+   - Analyse des données (chunk avec graphique)
+   - Conclusion (texte avec résultat en ligne)
+4. Utiliser au moins :
+   - Un texte en **gras** et en *italique*
+   - Une formule mathématique
+   - Un chunk de code avec option `echo=FALSE`
+   - Un graphique avec légende
+
+**Bon travail !**
