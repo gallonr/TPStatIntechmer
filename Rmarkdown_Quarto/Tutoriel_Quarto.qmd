@@ -1,0 +1,1212 @@
+---
+title: "Tutoriel Quarto"
+subtitle: "Guide complet pour la rédaction de rapports scientifiques en aquaculture"
+author: "Votre Nom"
+date: today
+lang: fr
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-depth: 3
+    number-sections: true
+    code-fold: false
+    code-tools: true
+    theme: cosmo
+    highlight-style: tango
+    embed-resources: true
+  pdf:
+    toc: true
+    number-sections: true
+    colorlinks: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 8,
+  fig.height = 6,
+  fig.align = "center"
+)
+```
+
+# Introduction à Quarto
+
+## Qu'est-ce que Quarto ?
+
+**Quarto** est le **successeur moderne de R Markdown**, développé par Posit (anciennement RStudio). C'est un système de publication scientifique et technique open-source.
+
+### Avantages de Quarto
+
+- ✅ **Multi-langages** : R, Python, Julia, Observable JS
+- ✅ **Syntaxe moderne** : Amélioration de R Markdown
+- ✅ **Plus de formats** : Sites web, livres, présentations, dashboards
+- ✅ **Meilleures performances** : Rendu plus rapide
+- ✅ **Écosystème intégré** : Tout-en-un sans packages additionnels
+- ✅ **Compatible** : Fonctionne avec RStudio, VS Code, Jupyter
+
+::: {.callout-note}
+## Compatibilité avec R Markdown
+
+La plupart des documents R Markdown (.Rmd) fonctionnent directement en Quarto (.qmd) avec peu ou pas de modifications !
+:::
+
+## Structure d'un document Quarto
+
+Un document Quarto (.qmd) contient :
+
+1. **En-tête YAML** (métadonnées)
+2. **Texte en Markdown** (formatage)
+3. **Chunks de code** (R, Python, etc.)
+4. **Callouts et divs** (blocs spéciaux)
+
+---
+
+# L'en-tête YAML
+
+L'en-tête YAML est **plus puissant** dans Quarto qu'en R Markdown.
+
+## Exemple d'en-tête de base
+
+```yaml
+---
+title: "Analyse de la croissance de la daurade"
+subtitle: "Étude en ferme aquacole méditerranéenne"
+author: "Dr. Marie Martin"
+date: today
+lang: fr
+format: html
+---
+```
+
+## Options de format HTML
+
+### Configuration complète
+
+```yaml
+format:
+  html:
+    # Sommaire
+    toc: true
+    toc-location: left        # left, right, body
+    toc-depth: 3
+    toc-title: "Sommaire"
+    number-sections: true
+    number-depth: 3
+
+    # Code
+    code-fold: false          # true, false, show
+    code-tools: true          # Bouton pour afficher/masquer le code
+    code-link: true           # Liens vers documentation
+    code-line-numbers: false
+
+    # Apparence
+    theme: cosmo              # Thème Bootstrap
+    highlight-style: tango    # Coloration syntaxique
+    css: custom.css           # CSS personnalisé
+
+    # Options avancées
+    embed-resources: true     # Document autonome
+    smooth-scroll: true
+    anchor-sections: true
+    fig-cap-location: bottom
+    tbl-cap-location: top
+```
+
+**Thèmes disponibles** : `default`, `cerulean`, `cosmo`, `cyborg`, `darkly`, `flatly`, `journal`, `litera`, `lumen`, `lux`, `materia`, `minty`, `morph`, `pulse`, `quartz`, `sandstone`, `simplex`, `sketchy`, `slate`, `solar`, `spacelab`, `superhero`, `united`, `vapor`, `yeti`, `zephyr`
+
+## Options de format PDF
+
+```yaml
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=30mm
+      - left=20mm
+    papersize: a4
+    fontsize: 11pt
+    documentclass: article
+    fig-pos: 'H'
+    keep-tex: true           # Conserver le fichier .tex
+```
+
+## Plusieurs formats simultanés
+
+```yaml
+format:
+  html:
+    toc: true
+    theme: cosmo
+  pdf:
+    toc: true
+    colorlinks: true
+  docx:
+    toc: true
+```
+
+## Paramètres du document
+
+```yaml
+params:
+  espece: "Sparus aurata"
+  temperature_min: 20
+  temperature_max: 26
+```
+
+Utilisation dans le texte : `` `r params$espece` ``
+
+---
+
+# Mise en forme du texte
+
+## Titres et sections
+
+Identique à R Markdown :
+
+```markdown
+# Titre de niveau 1
+## Titre de niveau 2
+### Titre de niveau 3
+#### Titre de niveau 4
+##### Titre de niveau 5
+###### Titre de niveau 6
+```
+
+### Exemple en halieutique
+
+# Évaluation des stocks de thon rouge
+
+## Matériel et méthodes
+
+### Zone d'étude
+
+L'étude a été menée en Méditerranée occidentale.
+
+### Échantillonnage
+
+Les captures ont été effectuées par chalutage pélagique.
+
+## Formatage du texte
+
+| Syntaxe | Rendu | Exemple aquaculture |
+|---------|-------|---------------------|
+| `*italique*` | *italique* | *Dicentrarchus labrax* |
+| `**gras**` | **gras** | **Température critique : 30°C** |
+| `***gras italique***` | ***gras italique*** | ***Mortalité massive observée*** |
+| `` `code` `` | `code` | Fonction `glm()` |
+| `~~barré~~` | ~~barré~~ | ~~Protocole abandonné~~ |
+| `^exposant^` | exposant | CO~2~ dissous |
+| `~indice~` | indice | Biomasse en t·an^-1^ |
+
+### Exemple pratique
+
+Le *bar européen* (*Dicentrarchus labrax*) est une espèce d'**intérêt commercial majeur** en Méditerranée. ***ATTENTION*** : Le taux de mortalité peut atteindre 50% si la température dépasse 28°C. La concentration en O~2~ doit rester > 5 mg·L^-1^.
+
+## Listes
+
+### Liste à puces
+
+```markdown
+Paramètres environnementaux mesurés :
+
+- Température (°C)
+- Salinité (PSU)
+- Oxygène dissous (mg/L)
+  - Matin (6h)
+  - Après-midi (14h)
+- pH
+- Turbidité (NTU)
+```
+
+**Rendu** :
+
+Paramètres environnementaux mesurés :
+
+- Température (°C)
+- Salinité (PSU)
+- Oxygène dissous (mg/L)
+  - Matin (6h)
+  - Après-midi (14h)
+- pH
+- Turbidité (NTU)
+
+### Liste numérotée
+
+```markdown
+Protocole de biométrie :
+
+1. Anesthésier le poisson (MS-222, 100 mg/L)
+2. Mesurer la longueur totale (LT, ± 1 mm)
+3. Peser (± 0.1 g)
+4. Photographier pour analyse morphométrique
+5. Retour dans le bassin de stabulation
+```
+
+**Rendu** :
+
+Protocole de biométrie :
+
+1. Anesthésier le poisson (MS-222, 100 mg/L)
+2. Mesurer la longueur totale (LT, ± 1 mm)
+3. Peser (± 0.1 g)
+4. Photographier pour analyse morphométrique
+5. Retour dans le bassin de stabulation
+
+### Liste de tâches (HTML uniquement)
+
+```markdown
+- [x] Calibration de la sonde à oxygène
+- [x] Acclimation des poissons
+- [ ] Mesures biométriques finales
+- [ ] Analyse statistique
+```
+
+**Rendu** :
+
+- [x] Calibration de la sonde à oxygène
+- [x] Acclimation des poissons
+- [ ] Mesures biométriques finales
+- [ ] Analyse statistique
+
+## Liens et images
+
+### Liens
+
+```markdown
+Consulter le [portail FishBase](https://www.fishbase.se)
+
+Email : [contact@aquaculture.fr](mailto:contact@aquaculture.fr)
+```
+
+**Rendu** :
+
+Consulter le [portail FishBase](https://www.fishbase.se)
+
+### Images
+
+```markdown
+![Daurade royale](image.jpg)
+
+![Daurade royale](image.jpg){width=50%}
+
+![Daurade royale](image.jpg){width=300px fig-align="center"}
+```
+
+## Tableaux
+
+### Tableau simple
+
+```markdown
+| Espèce | Nom scientifique | Taille max (cm) |
+|--------|------------------|-----------------|
+| Daurade royale | *Sparus aurata* | 70 |
+| Bar européen | *Dicentrarchus labrax* | 100 |
+| Loup de l'Atlantique | *Anarhichas lupus* | 150 |
+```
+
+**Rendu** :
+
+| Espèce | Nom scientifique | Taille max (cm) |
+|--------|------------------|-----------------|
+| Daurade royale | *Sparus aurata* | 70 |
+| Bar européen | *Dicentrarchus labrax* | 100 |
+| Loup de l'Atlantique | *Anarhichas lupus* | 150 |
+
+### Tableau avec alignement
+
+```markdown
+| Paramètre | Valeur optimale | Tolérance |
+|:----------|:---------------:|----------:|
+| Température | 23-25°C | ± 3°C |
+| Oxygène | 6-8 mg/L | > 5 mg/L |
+| pH | 7.5-8.5 | ± 0.5 |
+```
+
+**Rendu** :
+
+| Paramètre | Valeur optimale | Tolérance |
+|:----------|:---------------:|----------:|
+| Température | 23-25°C | ± 3°C |
+| Oxygène | 6-8 mg/L | > 5 mg/L |
+| pH | 7.5-8.5 | ± 0.5 |
+
+### Légende de tableau
+
+```markdown
+: Paramètres optimaux pour l'élevage de la daurade {#tbl-parametres}
+
+| Paramètre | Valeur |
+|-----------|--------|
+| ... | ... |
+```
+
+Référence : `@tbl-parametres`
+
+---
+
+# Formules mathématiques
+
+Quarto utilise **LaTeX** pour les mathématiques (identique à R Markdown).
+
+## Formules en ligne
+
+```markdown
+Le taux de croissance instantanée $G_i$ est donné par : $G_i = \frac{dW}{dt} \times \frac{1}{W}$
+```
+
+**Rendu** :
+
+Le taux de croissance instantanée $G_i$ est donné par : $G_i = \frac{dW}{dt} \times \frac{1}{W}$
+
+## Formules centrées
+
+```markdown
+$$
+TCA = \frac{W_f - W_i}{t}
+$$
+```
+
+**Rendu** :
+
+$$
+TCA = \frac{W_f - W_i}{t}
+$$
+
+## Formules en aquaculture/halieutique
+
+### Taux de croissance pondéral (TCA)
+
+$$
+TCA = \frac{W_f - W_i}{t}
+$$
+
+où $W_f$ = poids final (g), $W_i$ = poids initial (g), $t$ = durée (jours)
+
+### Taux de croissance spécifique (SGR)
+
+$$
+SGR = \frac{\ln(W_f) - \ln(W_i)}{t} \times 100
+$$
+
+### Facteur de condition de Fulton
+
+$$
+K = \frac{W}{L^3} \times 100
+$$
+
+où $W$ = poids (g), $L$ = longueur totale (cm)
+
+### Indice de conversion alimentaire (IC ou FCR)
+
+$$
+IC = \frac{\text{Quantité d'aliment distribuée (kg)}}{\text{Gain de poids vif (kg)}}
+$$
+
+### Coefficient thermique de croissance (TGC)
+
+$$
+TGC = \frac{W_f^{1/3} - W_i^{1/3}}{T \times t} \times 1000
+$$
+
+où $T$ = température moyenne (°C), $t$ = durée (jours)
+
+### Modèle de croissance de von Bertalanffy
+
+$$
+L_t = L_\infty \left[1 - e^{-K(t - t_0)}\right]
+$$
+
+**Paramètres** :
+
+- $L_t$ : longueur à l'âge $t$
+- $L_\infty$ : longueur asymptotique (cm)
+- $K$ : coefficient de croissance (an^-1^)
+- $t_0$ : âge théorique à longueur nulle (an)
+
+### Mortalité totale (Z)
+
+$$
+Z = M + F
+$$
+
+où :
+
+- $Z$ = mortalité totale (an^-1^)
+- $M$ = mortalité naturelle (an^-1^)
+- $F$ = mortalité par pêche (an^-1^)
+
+### Modèle de Beverton-Holt (recrutement)
+
+$$
+R = \frac{\alpha S}{1 + \beta S}
+$$
+
+où $R$ = recrutement, $S$ = stock reproducteur
+
+### Rendement par recrue (Y/R)
+
+$$
+\frac{Y}{R} = F \times W_\infty \times \sum_{t=t_r}^{\infty} e^{-Z(t-t_r)}
+$$
+
+## Équations numérotées {#sec-equations}
+
+```markdown
+$$
+\text{Biomasse} = N \times \bar{W}
+$$ {#eq-biomasse}
+
+Selon l'équation @eq-biomasse, la biomasse totale dépend de l'effectif.
+```
+
+**Rendu** :
+
+$$
+\text{Biomasse} = N \times \bar{W}
+$$ {#eq-biomasse}
+
+Selon l'équation @eq-biomasse, la biomasse totale dépend de l'effectif.
+
+## Symboles spéciaux
+
+| Symbole | Code LaTeX | Utilisation aquaculture |
+|---------|------------|-------------------------|
+| $\alpha$ | `\alpha` | Niveau de confiance |
+| $\beta$ | `\beta` | Paramètre de régression |
+| $\mu$ | `\mu` | Moyenne |
+| $\sigma$ | `\sigma` | Écart-type |
+| $\Delta$ | `\Delta` | Variation |
+| $\sum$ | `\sum` | Somme |
+| $\prod$ | `\prod` | Produit |
+| $\int$ | `\int` | Intégrale |
+| $\infty$ | `\infty` | Infini ($L_\infty$) |
+| $\pm$ | `\pm` | Plus ou moins |
+| $\approx$ | `\approx` | Approximativement |
+| $\propto$ | `\propto` | Proportionnel à |
+| $\geq$ | `\geq` | Supérieur ou égal |
+| $\leq$ | `\leq` | Inférieur ou égal |
+
+---
+
+# Chunks de code
+
+## Structure d'un chunk
+
+Identique à R Markdown :
+
+````markdown
+```{r}
+# Code R ici
+```
+````
+
+## Nommage des chunks
+
+````markdown
+```{r calcul-biomasse}
+biomasse <- 1500 * 45.2
+biomasse
+```
+````
+
+## Options des chunks
+
+### Options principales
+
+| Option | Valeurs | Description |
+|--------|---------|-------------|
+| `echo` | `true`/`false` | Afficher le code |
+| `eval` | `true`/`false` | Exécuter le code |
+| `include` | `true`/`false` | Inclure le chunk |
+| `output` | `true`/`false`/`asis` | Format de sortie |
+| `warning` | `true`/`false` | Afficher warnings |
+| `message` | `true`/`false` | Afficher messages |
+| `error` | `true`/`false` | Afficher erreurs |
+| `fig-width` | nombre | Largeur figure (pouces) |
+| `fig-height` | nombre | Hauteur figure |
+| `fig-cap` | texte | Légende |
+| `fig-align` | `left`, `center`, `right` | Alignement |
+| `label` | texte | Étiquette pour référence |
+
+::: {.callout-tip}
+## Différence avec R Markdown
+
+Dans Quarto, les options utilisent des **tirets** (`fig-width`) au lieu de points (`fig.width`). Les deux syntaxes fonctionnent mais les tirets sont recommandés.
+:::
+
+### Syntaxe Quarto (recommandée)
+
+````markdown
+```{r}
+#| label: fig-croissance
+#| echo: false
+#| fig-cap: "Évolution du poids moyen"
+#| fig-width: 8
+#| fig-height: 6
+
+plot(temps, poids)
+```
+````
+
+### Syntaxe R Markdown (compatible)
+
+````markdown
+```{r fig-croissance, echo=FALSE, fig.cap="Évolution du poids moyen", fig.width=8}
+plot(temps, poids)
+```
+````
+
+## Exemples pratiques
+
+### Chunk setup
+
+````markdown
+```{r}
+#| label: setup
+#| include: false
+
+library(ggplot2)
+library(dplyr)
+library(knitr)
+
+# Options globales
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+````
+
+### Afficher uniquement le résultat
+
+````markdown
+```{r}
+#| echo: false
+
+biomasse_totale <- 2500 * 52.8
+cat("Biomasse totale :", round(biomasse_totale/1000, 1), "kg")
+```
+````
+
+**Rendu** :
+
+```{r}
+#| echo: false
+
+biomasse_totale <- 2500 * 52.8
+cat("Biomasse totale :", round(biomasse_totale/1000, 1), "kg")
+```
+
+### Code non exécuté (exemple)
+
+````markdown
+```{r}
+#| eval: false
+
+# Exemple de calcul du SGR (non exécuté)
+SGR <- (log(poids_final) - log(poids_initial)) / duree * 100
+```
+````
+
+**Rendu** :
+
+```{r}
+#| eval: false
+
+# Exemple de calcul du SGR
+SGR <- (log(poids_final) - log(poids_initial)) / duree * 100
+```
+
+### Figure avec référence croisée
+
+````markdown
+```{r}
+#| label: fig-temperature
+#| fig-cap: "Évolution de la température de l'eau"
+#| fig-width: 8
+#| fig-height: 5
+
+jours <- 1:30
+temperature <- 22 + 2 * sin(jours / 5) + rnorm(30, sd = 0.5)
+
+plot(jours, temperature, type = "l", col = "red", lwd = 2,
+     xlab = "Jour", ylab = "Température (°C)",
+     main = "Suivi thermique du bassin")
+abline(h = 23, col = "blue", lty = 2)
+```
+````
+
+Référence dans le texte : `@fig-temperature`
+
+**Rendu** :
+
+```{r}
+#| label: fig-temperature
+#| fig-cap: "Évolution de la température de l'eau"
+#| fig-width: 8
+#| fig-height: 5
+#| echo: false
+
+jours <- 1:30
+set.seed(123)
+temperature <- 22 + 2 * sin(jours / 5) + rnorm(30, sd = 0.5)
+
+plot(jours, temperature, type = "l", col = "red", lwd = 2,
+     xlab = "Jour", ylab = "Température (°C)",
+     main = "Suivi thermique du bassin")
+abline(h = 23, col = "blue", lty = 2)
+```
+
+La @fig-temperature montre les variations journalières de température.
+
+## Code en ligne
+
+```markdown
+La température moyenne était de `r round(mean(temperature), 1)`°C.
+```
+
+**Rendu** :
+
+La température moyenne était de `r round(mean(c(22, 23.5, 24, 22.8, 23.2)), 1)`°C.
+
+---
+
+# Callouts (Blocs spéciaux)
+
+Les **callouts** sont une fonctionnalité unique à Quarto pour mettre en évidence des informations.
+
+## Types de callouts
+
+### Note
+
+```markdown
+:::{.callout-note}
+La daurade royale (*Sparus aurata*) est une espèce hermaphrodite protandre.
+:::
+```
+
+**Rendu** :
+
+:::{.callout-note}
+La daurade royale (*Sparus aurata*) est une espèce hermaphrodite protandre.
+:::
+
+### Astuce
+
+```markdown
+:::{.callout-tip}
+## Conseil pratique
+
+Pour mesurer précisément les poissons, utilisez un ichtyomètre calibré.
+:::
+```
+
+**Rendu** :
+
+:::{.callout-tip}
+## Conseil pratique
+
+Pour mesurer précisément les poissons, utilisez un ichtyomètre calibré.
+:::
+
+### Avertissement
+
+```markdown
+:::{.callout-warning}
+Température > 28°C : risque de stress thermique et mortalité !
+:::
+```
+
+**Rendu** :
+
+:::{.callout-warning}
+Température > 28°C : risque de stress thermique et mortalité !
+:::
+
+### Important
+
+```markdown
+:::{.callout-important}
+L'oxygène dissous doit **impérativement** rester supérieur à 5 mg/L.
+:::
+```
+
+**Rendu** :
+
+:::{.callout-important}
+L'oxygène dissous doit **impérativement** rester supérieur à 5 mg/L.
+:::
+
+### Attention
+
+```markdown
+:::{.callout-caution}
+## Manipulation des poissons
+
+Ne jamais manipuler les poissons à mains nues. Utiliser des gants humides.
+:::
+```
+
+**Rendu** :
+
+:::{.callout-caution}
+## Manipulation des poissons
+
+Ne jamais manipuler les poissons à mains nues. Utiliser des gants humides.
+:::
+
+## Callouts pliables
+
+```markdown
+:::{.callout-note collapse="true"}
+## Détails du protocole
+
+1. Acclimation : 7 jours
+2. Mesures : tous les 15 jours
+3. Alimentation : 2% biomasse/jour
+:::
+```
+
+**Rendu** :
+
+:::{.callout-note collapse="true"}
+## Détails du protocole
+
+1. Acclimation : 7 jours
+2. Mesures : tous les 15 jours
+3. Alimentation : 2% biomasse/jour
+:::
+
+## Callouts avec icônes personnalisées
+
+```markdown
+:::{.callout-tip icon=false}
+## 🐟 Astuce aquaculture
+
+Maintenir un ratio mâles/femelles de 1:3 pour optimiser la reproduction.
+:::
+```
+
+---
+
+# Exemple complet : Analyse de stock
+
+```{r generation-donnees-stock, echo=FALSE}
+set.seed(456)
+n <- 80
+
+# Données de captures
+annee <- rep(2018:2022, each = 16)
+mois <- rep(1:12, length.out = n)
+captures <- round(rnorm(n, mean = 150, sd = 30) + 20 * sin(mois/2), 0)
+captures <- pmax(captures, 50)
+
+# Données de longueur
+longueurs <- rnorm(80, mean = 35, sd = 5)
+poids <- 0.01 * longueurs^3 + rnorm(80, sd = 50)
+
+donnees_captures <- data.frame(
+  annee = annee,
+  mois = mois,
+  captures_tonnes = captures
+)
+
+donnees_bio <- data.frame(
+  longueur_cm = round(longueurs, 1),
+  poids_g = round(pmax(poids, 100), 0)
+)
+```
+
+## Introduction
+
+Cette étude porte sur l'évaluation du stock de **bar européen** (*Dicentrarchus labrax*) en Méditerranée occidentale sur la période 2018-2022.
+
+:::{.callout-note}
+## Objectifs
+
+1. Analyser l'évolution des captures
+2. Estimer les paramètres de croissance
+3. Évaluer l'état du stock
+:::
+
+## Données de captures
+
+### Statistiques descriptives
+
+```{r stats-captures}
+#| echo: true
+#| output: asis
+
+library(dplyr)
+library(knitr)
+
+stats <- donnees_captures %>%
+  group_by(annee) %>%
+  summarise(
+    `Captures moyennes (t)` = round(mean(captures_tonnes), 1),
+    `Écart-type (t)` = round(sd(captures_tonnes), 1),
+    `Min (t)` = min(captures_tonnes),
+    `Max (t)` = max(captures_tonnes)
+  )
+
+kable(stats, caption = "Statistiques annuelles des captures de bar")
+```
+
+### Évolution temporelle
+
+```{r}
+#| label: fig-captures
+#| fig-cap: "Évolution des captures mensuelles de bar européen (2018-2022)"
+#| fig-width: 10
+#| fig-height: 6
+#| warning: false
+
+library(ggplot2)
+
+ggplot(donnees_captures, aes(x = mois, y = captures_tonnes, color = factor(annee))) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_continuous(breaks = 1:12, labels = month.abb) +
+  labs(
+    title = "Captures mensuelles de Dicentrarchus labrax",
+    x = "Mois",
+    y = "Captures (tonnes)",
+    color = "Année"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    legend.position = "right"
+  )
+```
+
+La @fig-captures montre une **saisonnalité marquée** des captures, avec un pic en été.
+
+## Paramètres biologiques
+
+### Relation taille-poids
+
+La relation taille-poids suit le modèle allométrique :
+
+$$
+W = a \times L^b
+$$ {#eq-taille-poids}
+
+```{r}
+#| label: fig-taille-poids
+#| fig-cap: "Relation taille-poids du bar européen"
+#| fig-width: 8
+#| fig-height: 6
+
+# Régression log-log
+modele <- lm(log(poids_g) ~ log(longueur_cm), data = donnees_bio)
+
+# Paramètres
+a <- exp(coef(modele)[1])
+b <- coef(modele)[2]
+
+ggplot(donnees_bio, aes(x = longueur_cm, y = poids_g)) +
+  geom_point(alpha = 0.6, size = 3, color = "steelblue") +
+  geom_smooth(method = "lm", formula = y ~ x,
+              se = TRUE, color = "red") +
+  labs(
+    title = "Relation allométrique taille-poids",
+    subtitle = sprintf("W = %.4f × L^%.3f (R² = %.3f)",
+                      a, b, summary(modele)$r.squared),
+    x = "Longueur totale (cm)",
+    y = "Poids (g)"
+  ) +
+  theme_minimal()
+```
+
+**Résultats** :
+
+- Coefficient $a$ = `r round(a, 4)`
+- Exposant $b$ = `r round(b, 3)`
+- R² = `r round(summary(modele)$r.squared, 3)`
+
+:::{.callout-tip}
+## Interprétation
+
+Le coefficient $b \approx 3$ indique une **croissance isométrique** (forme constante avec la taille).
+:::
+
+## Conclusions
+
+:::{.callout-important}
+## Recommandations de gestion
+
+1. Maintenir l'effort de pêche stable
+2. Respecter la taille minimale de capture (42 cm)
+3. Instaurer une fermeture saisonnière (juin-juillet)
+4. Surveiller le recrutement annuel
+:::
+
+---
+
+# Mise en page avancée
+
+## Colonnes
+
+### Deux colonnes
+
+```markdown
+:::{.columns}
+
+:::{.column width="50%"}
+**Avantages de l'aquaculture** :
+
+- Production contrôlée
+- Qualité constante
+- Traçabilité
+:::
+
+:::{.column width="50%"}
+**Défis** :
+
+- Investissement initial
+- Gestion sanitaire
+- Impact environnemental
+:::
+
+:::
+```
+
+**Rendu** :
+
+:::{.columns}
+
+:::{.column width="50%"}
+**Avantages de l'aquaculture** :
+
+- Production contrôlée
+- Qualité constante
+- Traçabilité
+:::
+
+:::{.column width="50%"}
+**Défis** :
+
+- Investissement initial
+- Gestion sanitaire
+- Impact environnemental
+:::
+
+:::
+
+## Onglets (HTML uniquement)
+
+```markdown
+::: {.panel-tabset}
+
+## Daurade
+
+*Sparus aurata* - Température optimale : 23-25°C
+
+## Bar
+
+*Dicentrarchus labrax* - Température optimale : 20-24°C
+
+## Loup
+
+*Anarhichas lupus* - Température optimale : 8-12°C
+
+:::
+```
+
+**Rendu** :
+
+::: {.panel-tabset}
+
+## Daurade
+
+*Sparus aurata* - Température optimale : 23-25°C
+
+## Bar
+
+*Dicentrarchus labrax* - Température optimale : 20-24°C
+
+## Loup
+
+*Anarhichas lupus* - Température optimale : 8-12°C
+
+:::
+
+## Marges et aside
+
+```markdown
+::: {.aside}
+**Note** : Les données proviennent de la FAO
+:::
+```
+
+---
+
+# Références croisées
+
+## Figures
+
+```markdown
+Voir la @fig-temperature pour les détails.
+```
+
+## Tableaux
+
+```markdown
+: Paramètres de croissance {#tbl-croissance}
+
+Le @tbl-croissance résume les résultats.
+```
+
+## Équations
+
+```markdown
+L'équation @eq-biomasse montre la relation.
+```
+
+## Sections
+
+```markdown
+Voir la @sec-equations pour plus d'informations.
+```
+
+---
+
+# Rendu du document
+
+## Depuis RStudio
+
+1. Cliquer sur **Render** (ou Ctrl+Shift+K)
+2. Le document s'ouvre automatiquement
+
+## Depuis le terminal
+
+```bash
+# HTML
+quarto render document.qmd
+
+# PDF
+quarto render document.qmd --to pdf
+
+# Word
+quarto render document.qmd --to docx
+
+# Tous les formats
+quarto render document.qmd --to all
+```
+
+## Prévisualisation en direct
+
+```bash
+quarto preview document.qmd
+```
+
+Un serveur local s'ouvre et le document se met à jour automatiquement à chaque modification.
+
+---
+
+# Différences clés R Markdown vs Quarto
+
+| Aspect | R Markdown | Quarto |
+|--------|-----------|--------|
+| **Extension** | `.Rmd` | `.qmd` |
+| **Rendu** | `Knit` | `Render` |
+| **Options chunks** | `fig.width=8` | `fig-width: 8` |
+| **Callouts** | Packages tiers | Natif |
+| **Langages** | Principalement R | R, Python, Julia, Observable |
+| **Références croisées** | `bookdown` requis | Natif |
+| **Thèmes** | limités | Plus nombreux |
+| **CLI** | Non | Oui (`quarto` commande) |
+
+---
+
+# Astuces avancées
+
+## Paramètres dynamiques
+
+```yaml
+params:
+  espece: "Sparus aurata"
+  n_echantillons: 100
+```
+
+Utilisation :
+
+```markdown
+L'espèce étudiée est `r params$espece` avec n = `r params$n_echantillons`.
+```
+
+## Inclusion conditionnelle
+
+```{r}
+#| eval: !expr params$mode == "detaille"
+
+# Ce code s'exécute uniquement si mode = "detaille"
+```
+
+## Code Python (si installé)
+
+````markdown
+```{python}
+import pandas as pd
+import numpy as np
+
+data = pd.DataFrame({
+  'longueur': np.random.normal(35, 5, 100),
+  'poids': np.random.normal(500, 100, 100)
+})
+
+print(data.describe())
+```
+````
+
+---
+
+# Ressources complémentaires
+
+## Documentation
+
+- [Site officiel Quarto](https://quarto.org)
+- [Guide Quarto](https://quarto.org/docs/guide/)
+- [Galerie d'exemples](https://quarto.org/docs/gallery/)
+
+## Comparaison R Markdown
+
+- [FAQ R Markdown → Quarto](https://quarto.org/docs/faq/rmarkdown.html)
+
+## Extensions utiles
+
+```bash
+# Installer une extension
+quarto install extension quarto-ext/lightbox
+```
+
+---
+
+# Exercice pratique
+
+**Objectif** : Créer un rapport d'évaluation de stock de thon rouge
+
+**Consignes** :
+
+1. Créer un fichier `evaluation_thon.qmd`
+2. Utiliser l'en-tête YAML avec :
+   - Titre et sous-titre
+   - Format HTML avec sommaire
+3. Inclure :
+   - Section Introduction (avec callout)
+   - Formule du SGR
+   - Chunk avec données simulées
+   - Graphique avec référence croisée
+   - Tableau avec statistiques
+   - Section Conclusion avec recommandations (callout-important)
+4. Utiliser au moins 3 callouts différents
+5. Ajouter une relation taille-poids avec équation numérotée
+
+**Bon travail !** 🐟
