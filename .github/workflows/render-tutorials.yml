@@ -48,8 +48,6 @@ jobs:
 
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: 'latest'
 
       - name: Create output directory
         run: |
@@ -58,12 +56,12 @@ jobs:
       - name: Render R Markdown tutorial
         run: |
           cd Rmarkdown_Quarto
-          Rscript -e 'rmarkdown::render("Tutoriel_RMarkdown.Rmd", output_file = "../../docs/tutoriels/Tutoriel_RMarkdown.html")'
+          Rscript -e 'rmarkdown::render("Tutoriel_RMarkdown.Rmd", output_file = "../docs/tutoriels/Tutoriel_RMarkdown.html")'
 
       - name: Render Quarto tutorial
         run: |
           cd Rmarkdown_Quarto
-          quarto render Tutoriel_Quarto.qmd --output-dir ../../docs/tutoriels
+          quarto render Tutoriel_Quarto.qmd --output-dir ../docs/tutoriels
 
       - name: Create index page
         run: |
@@ -215,7 +213,7 @@ jobs:
               <footer>
                 <p>
                   📧 Questions ou suggestions ? Contactez l'enseignant<br>
-                  🔗 <a href="https://github.com/votre-repo" target="_blank">Voir le code source sur GitHub</a>
+                  🔗 <a href="https://github.com/gallonr" target="_blank">Voir le code source sur GitHub</a>
                 </p>
                 <p style="font-size: 0.9em; margin-top: 20px;">
                   Généré automatiquement avec GitHub Actions • Dernière mise à jour : <span id="date"></span>
