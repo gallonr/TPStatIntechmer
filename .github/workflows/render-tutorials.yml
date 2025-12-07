@@ -42,12 +42,12 @@ jobs:
             libtiff5-dev \
             libjpeg-dev
 
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
       - name: Install R packages
         run: |
           Rscript -e 'install.packages(c("rmarkdown", "knitr", "ggplot2", "dplyr", "corrplot", "car", "lmtest", "ggpubr", "readxl"))'
-
-      - name: Setup Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Create output directory
         run: |
