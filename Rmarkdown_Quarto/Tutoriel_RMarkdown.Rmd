@@ -1,8 +1,6 @@
 ---
 title: "Tutoriel R Markdown"
-subtitle: "Guide complet pour la rédaction de rapports scientifiques en aquaculture"
-author: "Votre Nom"
-date: "`r Sys.Date()`"
+subtitle: "Guide complet pour la rédaction de rapports scientifiques"
 output:
   html_document:
     toc: true
@@ -11,10 +9,7 @@ output:
     number_sections: true
     theme: cosmo
     highlight: tango
-  pdf_document:
-    toc: true
-    number_sections: true
-    latex_engine: xelatex
+lang: fr
 ---
 
 ```{r setup, include=FALSE}
@@ -26,6 +21,10 @@ knitr::opts_chunk$set(
   fig.height = 6,
   fig.align = "center"
 )
+
+# Charger les packages nécessaires
+library(dplyr)
+library(ggplot2)
 ```
 
 # Introduction à R Markdown
@@ -385,7 +384,7 @@ mean(x)
 Il est **recommandé** de nommer vos chunks pour faciliter la navigation et le débogage.
 
 ````markdown
-```{r calcul-biomasse}
+```{r calcul-biomasse-naming-example, eval=FALSE}
 biomasse <- poids_moyen * nombre_poissons
 biomasse
 ```
@@ -416,7 +415,7 @@ Les options se placent dans l'en-tête du chunk : `` ```{r nom-chunk, option1=va
 #### Chunk setup (caché)
 
 ````markdown
-```{r setup, include=FALSE}
+```{r setup-example, include=FALSE, eval=FALSE}
 knitr::opts_chunk$set(
   echo = TRUE,
   warning = FALSE,
@@ -435,7 +434,7 @@ library(dplyr)
 #### Afficher uniquement le résultat
 
 ````markdown
-```{r calcul-biomasse, echo=FALSE}
+```{r calcul-biomasse-example, echo=FALSE, eval=FALSE}
 biomasse_totale <- 1250 * 45.3  # 1250 poissons à 45.3g
 biomasse_totale
 ```
@@ -451,7 +450,7 @@ biomasse_totale
 #### Afficher le code sans l'exécuter
 
 ````markdown
-```{r exemple-formule, eval=FALSE}
+```{r exemple-formule-noeval, eval=FALSE}
 # Calcul du SGR (non exécuté)
 SGR <- (log(poids_final) - log(poids_initial)) / duree * 100
 ```
@@ -467,7 +466,7 @@ SGR <- (log(poids_final) - log(poids_initial)) / duree * 100
 #### Figure avec légende
 
 ````markdown
-```{r graphique-croissance, fig.cap="Évolution du poids moyen de la daurade en fonction du temps", fig.width=8, fig.height=5}
+```{r graphique-croissance-example, fig.cap="Évolution du poids moyen de la daurade en fonction du temps", fig.width=8, fig.height=5, eval=FALSE}
 temps <- c(0, 30, 60, 90, 120)
 poids <- c(5, 25, 55, 95, 145)
 
@@ -750,23 +749,3 @@ rmarkdown::draft("mon_rapport.Rmd", template = "html_document", package = "rmark
 ```
 
 ---
-
-# Exercice pratique
-
-**Objectif** : Créer un rapport d'analyse de la croissance du bar européen (*Dicentrarchus labrax*).
-
-**Consignes** :
-
-1. Créer un nouveau fichier R Markdown
-2. Ajouter un en-tête YAML avec titre, auteur, date et sommaire
-3. Créer 3 sections :
-   - Introduction (texte avec formule du SGR)
-   - Analyse des données (chunk avec graphique)
-   - Conclusion (texte avec résultat en ligne)
-4. Utiliser au moins :
-   - Un texte en **gras** et en *italique*
-   - Une formule mathématique
-   - Un chunk de code avec option `echo=FALSE`
-   - Un graphique avec légende
-
-**Bon travail !**
