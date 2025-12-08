@@ -56,7 +56,7 @@ jobs:
       - name: Render R Markdown tutorial
         run: |
           cd Rmarkdown_Quarto
-          Rscript -e 'rmarkdown::render("Tutoriel_RMarkdown.Rmd", output_file = "../docs/tutoriels/Tutoriel_RMarkdown.html")'
+          quarto render Tutoriel_RMarkdown.Rmd --output-dir ../docs/tutoriels --to html
 
       - name: Render Quarto tutorial
         run: |
