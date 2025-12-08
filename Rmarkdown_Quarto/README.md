@@ -4,7 +4,7 @@ Ce dossier contient deux tutoriels complets pour apprendre à créer des rapport
 
 ## 📚 Tutoriels disponibles
 
-### 1. Tutoriel R Markdown (`Tutoriel_RMarkdown.Rmd`)
+### 1. Tutoriel R Markdown (`Tutoriel_RMarkdown.html`)
 Guide complet sur R Markdown avec des exemples en aquaculture :
 - Mise en forme du texte (titres, listes, tableaux)
 - Formules mathématiques (SGR, FCR, TGC)
@@ -14,7 +14,7 @@ Guide complet sur R Markdown avec des exemples en aquaculture :
 
 **Exemples traités :** Croissance de la daurade royale, analyse du bar européen
 
-### 2. Tutoriel Quarto (`Tutoriel_Quarto.qmd`)
+### 2. Tutoriel Quarto (`Tutoriel_Quarto.html`)
 Guide complet sur Quarto (successeur moderne de R Markdown) avec des exemples en halieutique :
 - Toutes les fonctionnalités de R Markdown
 - Callouts (notes, avertissements, astuces)
