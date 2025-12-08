@@ -1,8 +1,6 @@
 ---
 title: "Tutoriel Quarto"
-subtitle: "Guide complet pour la rédaction de rapports scientifiques en aquaculture"
-author: "Votre Nom"
-date: today
+subtitle: "Guide complet pour la rédaction de rapports scientifiques"
 lang: fr
 format:
   html:
@@ -15,10 +13,12 @@ format:
     theme: cosmo
     highlight-style: tango
     embed-resources: true
-  pdf:
-    toc: true
-    number-sections: true
-    colorlinks: true
+params:
+  espece: "Sparus aurata"
+  temperature_min: 20
+  temperature_max: 26
+  n_echantillons: 100
+  mode: "standard"
 ---
 
 ```{r setup, include=FALSE}
@@ -500,7 +500,7 @@ Selon l'équation @eq-biomasse, la biomasse totale dépend de l'effectif.
 Identique à R Markdown :
 
 ````markdown
-```{r}
+```{.r}
 # Code R ici
 ```
 ````
@@ -508,7 +508,7 @@ Identique à R Markdown :
 ## Nommage des chunks
 
 ````markdown
-```{r calcul-biomasse}
+```{.r calcul-biomasse}
 biomasse <- 1500 * 45.2
 biomasse
 ```
@@ -542,7 +542,7 @@ Dans Quarto, les options utilisent des **tirets** (`fig-width`) au lieu de point
 ### Syntaxe Quarto (recommandée)
 
 ````markdown
-```{r}
+```{.r}
 #| label: fig-croissance
 #| echo: false
 #| fig-cap: "Évolution du poids moyen"
@@ -556,7 +556,7 @@ plot(temps, poids)
 ### Syntaxe R Markdown (compatible)
 
 ````markdown
-```{r fig-croissance, echo=FALSE, fig.cap="Évolution du poids moyen", fig.width=8}
+```{.r fig-croissance, echo=FALSE, fig.cap="Évolution du poids moyen", fig.width=8}
 plot(temps, poids)
 ```
 ````
@@ -566,7 +566,7 @@ plot(temps, poids)
 ### Chunk setup
 
 ````markdown
-```{r}
+```{.r}
 #| label: setup
 #| include: false
 
@@ -586,7 +586,7 @@ knitr::opts_chunk$set(
 ### Afficher uniquement le résultat
 
 ````markdown
-```{r}
+```{.r}
 #| echo: false
 
 biomasse_totale <- 2500 * 52.8
@@ -606,7 +606,7 @@ cat("Biomasse totale :", round(biomasse_totale/1000, 1), "kg")
 ### Code non exécuté (exemple)
 
 ````markdown
-```{r}
+```{.r}
 #| eval: false
 
 # Exemple de calcul du SGR (non exécuté)
@@ -626,7 +626,7 @@ SGR <- (log(poids_final) - log(poids_initial)) / duree * 100
 ### Figure avec référence croisée
 
 ````markdown
-```{r}
+```{.r}
 #| label: fig-temperature
 #| fig-cap: "Évolution de la température de l'eau"
 #| fig-width: 8
@@ -1153,7 +1153,7 @@ L'espèce étudiée est `r params$espece` avec n = `r params$n_echantillons`.
 ## Code Python (si installé)
 
 ````markdown
-```{python}
+```{.python}
 import pandas as pd
 import numpy as np
 
@@ -1179,34 +1179,3 @@ print(data.describe())
 ## Comparaison R Markdown
 
 - [FAQ R Markdown → Quarto](https://quarto.org/docs/faq/rmarkdown.html)
-
-## Extensions utiles
-
-```bash
-# Installer une extension
-quarto install extension quarto-ext/lightbox
-```
-
----
-
-# Exercice pratique
-
-**Objectif** : Créer un rapport d'évaluation de stock de thon rouge
-
-**Consignes** :
-
-1. Créer un fichier `evaluation_thon.qmd`
-2. Utiliser l'en-tête YAML avec :
-   - Titre et sous-titre
-   - Format HTML avec sommaire
-3. Inclure :
-   - Section Introduction (avec callout)
-   - Formule du SGR
-   - Chunk avec données simulées
-   - Graphique avec référence croisée
-   - Tableau avec statistiques
-   - Section Conclusion avec recommandations (callout-important)
-4. Utiliser au moins 3 callouts différents
-5. Ajouter une relation taille-poids avec équation numérotée
-
-**Bon travail !** 🐟
